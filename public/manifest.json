@@ -1,0 +1,27 @@
+{
+  "theme_color": "#0052ff",
+  "background_color": "#5ea2ec",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "en-US",
+  "start_url": "https://stable.wtf/app",
+  "scope": "https://stable.wtf/app/*",
+  "name": "USDC",
+  "short_name": "USDC",
+  "description": "stablecoin transfers"
+}

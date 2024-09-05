@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import withSerwistInit from "@serwist/next";
 
-export default nextConfig;
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+});
+
+export default withSerwist({
+  async redirects() {
+    return [{ source: "/", destination: "/sign-in", permanent: false }];
+  },
+});
