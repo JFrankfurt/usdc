@@ -17,29 +17,31 @@ export function TransactionsList() {
     async function fetchLogs() {
       try {
         // Fetch sent transactions (where `from` is the current user)
+        // @ts-ignore
         const sendLogs = await getLogs(client, {
           address: USDC.address as Address,
           event: parseAbiItem(
             "event Transfer(address indexed from, address indexed to, uint256)"
           ),
           args: {
-            from: address,
+            from: "0x48c89d77ae34ae475e4523b25ab01e363dce5a78",
           },
-          fromBlock: 193826n,
+          fromBlock: 2212480n,
         });
 
         console.log("jf sendLogs", sendLogs);
 
         // Fetch received transactions (where `to` is the current user)
+        // @ts-ignore
         const receiveLogs = await getLogs(client, {
           address: USDC.address as Address,
           event: parseAbiItem(
             "event Transfer(address indexed from, address indexed to, uint256)"
           ),
           args: {
-            to: address,
+            to: "0x48c89d77ae34ae475e4523b25ab01e363dce5a78",
           },
-          fromBlock: 193826n,
+          fromBlock: 2212480n,
         });
         console.log("jf receiveLogs", receiveLogs);
 

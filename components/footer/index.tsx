@@ -1,6 +1,6 @@
-import Cart from "@/app/icons/cart.svg";
+import Friends from "@/app/icons/user.svg";
 import Star from "@/app/icons/star.svg";
-import Account from "@/app/icons/user-circle.svg";
+import Settings from "@/app/icons/cog.svg";
 import Wallet from "@/app/icons/wallet.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,32 +9,32 @@ export default function Footer() {
   return (
     <nav className="flex flex-row items-center justify-around sticky bottom-0 py-3 bg-white">
       <Link
-        href="/wallet"
+        href="/home"
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
-        <Image src={Wallet} alt="banknotes" />
-        Wallet
+        <Image src={Wallet} alt="Wallet" />
+        Home
       </Link>
       <Link
         href="/reward"
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
-        <Image src={Star} alt="banknotes" />
-        Reward
+        <Image src={Star} alt="Rewards" />
+        Rewards
       </Link>
       <Link
-        href="/shop"
+        href="/friends"
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
-        <Image src={Cart} alt="banknotes" />
-        Shop
+        <Image src={Friends} alt="Friends" />
+        Friends
       </Link>
       <Link
-        href="/account"
+        href="/settings"
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
-        <Image src={Account} alt="banknotes" />
-        Account
+        <Image src={Settings} alt="settings" />
+        Settings
       </Link>
     </nav>
   );
