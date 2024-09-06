@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.31.4",
+    "@headlessui/react": "^2.1.5",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-scroll-area": "^1.1.0",
     "@serwist/next": "^9.0.7",
