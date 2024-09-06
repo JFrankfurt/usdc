@@ -1,5 +1,5 @@
 import Friends from "@/app/icons/user.svg";
-import Star from "@/app/icons/star.svg";
+import Bell from "@/app/icons/bell.svg";
 import Settings from "@/app/icons/cog.svg";
 import Wallet from "@/app/icons/wallet.svg";
 import Image from "next/image";
@@ -16,11 +16,11 @@ export default function Footer() {
         Home
       </Link>
       <Link
-        href=""
+        href="/requests"
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
-        <Image src={Star} alt="Rewards" />
-        Rewards
+        <Image src={Bell} alt="Rewards" />
+        Requests
       </Link>
       <Link
         href="/friends"

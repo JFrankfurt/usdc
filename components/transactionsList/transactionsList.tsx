@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { GetLogsReturnType, parseAbiItem, type Address } from "viem";
 import { getLogs } from "viem/actions";
 import { useAccount, useClient } from "wagmi";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function TransactionsList() {
   const [sends, setSends] = useState<GetLogsReturnType | null>(null);
@@ -70,7 +71,7 @@ export function TransactionsList() {
   }, [sends, receives]);
 
   return (
-    <div>
+    <ScrollArea>
       {transactions.length === 0 ? (
         <p>No transactions found</p>
       ) : (
@@ -83,6 +84,6 @@ export function TransactionsList() {
           </div>
         ))
       )}
-    </div>
+    </ScrollArea>
   );
 }

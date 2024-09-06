@@ -1,6 +1,7 @@
 "use client";
 
 import EarnMoreSvg from "@/app/icons/earn-more.svg";
+import PendingRequestsList from "@/components/pendingRequestsList";
 import { TransactionsList } from "@/components/transactionsList/transactionsList";
 import { USDC } from "@/constants/tokens";
 import { useUSDCBalance } from "@/hooks/useUSDCBalance";
@@ -18,7 +19,7 @@ export default function Home() {
     router.push("/sign-in");
   }
   return (
-    <div className="flex flex-col justify-start h-screen">
+    <div className="flex flex-col justify-start h-[calc(100vh-72px)]">
       <div className="flex flex-col mx-3 mt-12 gap-2">
         <p className="text-xs text-palette-foregroundMuted">Cash balance</p>
         <p className="text-7xl">
@@ -35,13 +36,14 @@ export default function Home() {
         <Image src={EarnMoreSvg} alt="earn more filler" />
       </div>
 
-      <div className="flex-grow">
-        <div className="flex flex-row items-center justify-between mx-4">
-          <h2 className="text-xl font-semibold">Transactions</h2>
-          <Link href="/transactions" className="text-ocsblue hover:underline">
-            See all
-          </Link>
-        </div>
+      <div className="flex flex-row items-center justify-between mx-4">
+        <h2 className="text-xl font-semibold">Transactions</h2>
+        <Link href="/transactions" className="text-ocsblue hover:underline">
+          See all
+        </Link>
+      </div>
+      <div className="flex-1">
+        <PendingRequestsList />
         <TransactionsList />
       </div>
       <div className="flex flex-row justify-around items-center gap-4 mx-4">
