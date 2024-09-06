@@ -1,15 +1,15 @@
 import { useAccount, useReadContract } from "wagmi";
 import YOU_OWE_ABI from "@/abi/youOwe";
 import { formatEther } from "viem";
-import { baseSepolia } from "viem/chains";
+import { base } from "viem/chains";
 import { YOU_OWE_ADDRESS } from "@/constants/addresses";
 
 export default function PendingRequestsList() {
   const account = useAccount();
 
   const { data: debts } = useReadContract({
-    address: YOU_OWE_ADDRESS[baseSepolia.id],
-    chainId: baseSepolia.id,
+    address: YOU_OWE_ADDRESS[base.id],
+    chainId: base.id,
     abi: YOU_OWE_ABI,
     functionName: "getDebtsOwedBy",
     args: [account.address ?? "0x0"],

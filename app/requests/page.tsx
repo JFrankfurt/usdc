@@ -7,7 +7,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import { baseSepolia } from "viem/chains";
+import { base } from "viem/chains";
 import { formatEther, parseEther } from "viem";
 import YOU_OWE_ABI from "@/abi/youOwe";
 import { YOU_OWE_ADDRESS } from "@/constants/addresses";
@@ -33,7 +33,7 @@ export default function DebtManagement() {
   }
   const { data: incomingDebtsData, refetch: refetchIncoming } = useReadContract(
     {
-      address: YOU_OWE_ADDRESS[baseSepolia.id],
+      address: YOU_OWE_ADDRESS[base.id],
       abi: YOU_OWE_ABI,
       functionName: "getDebtsOwedTo",
       args: [address ?? "0x0"],
@@ -43,7 +43,7 @@ export default function DebtManagement() {
 
   const { data: outgoingDebtsData, refetch: refetchOutgoing } = useReadContract(
     {
-      address: YOU_OWE_ADDRESS[baseSepolia.id],
+      address: YOU_OWE_ADDRESS[base.id],
       abi: YOU_OWE_ABI,
       functionName: "getDebtsOwedBy",
       args: [address ?? "0x0"],
@@ -55,7 +55,7 @@ export default function DebtManagement() {
   const { writeContract: settleDebt, data: settleData } = useWriteContract();
   const handleCancel = useCallback((debtId: bigint) => {
     cancelDebt({
-      address: YOU_OWE_ADDRESS[baseSepolia.id],
+      address: YOU_OWE_ADDRESS[base.id],
       abi: YOU_OWE_ABI,
       functionName: "cancelDebt",
       args: [debtId],
@@ -64,7 +64,7 @@ export default function DebtManagement() {
 
   const handleSettle = useCallback((debtId: bigint, amount: bigint) => {
     settleDebt({
-      address: YOU_OWE_ADDRESS[baseSepolia.id],
+      address: YOU_OWE_ADDRESS[base.id],
       abi: YOU_OWE_ABI,
       functionName: "settleDebt",
       args: [debtId],

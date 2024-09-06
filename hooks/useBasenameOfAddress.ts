@@ -26,7 +26,7 @@ export const convertChainIdToCoinType = (chainId: number): string => {
 export function useBasenameOfAddress(address: Address | undefined = "0x0") {
   const addressFormatted = address.toLocaleLowerCase() as Address;
   const addressNode = keccak256(addressFormatted.substring(2) as Address);
-  const chainCoinType = convertChainIdToCoinType(baseSepolia.id);
+  const chainCoinType = convertChainIdToCoinType(base.id);
   const baseReverseNode = namehash(
     `${chainCoinType.toLocaleUpperCase()}.reverse`
   );
@@ -35,7 +35,7 @@ export function useBasenameOfAddress(address: Address | undefined = "0x0") {
   );
   const chainId = useChainId();
   return useReadContract({
-    chainId: baseSepolia.id,
+    chainId: base.id,
     abi: L2ResolverAbi,
     address: USERNAME_L2_RESOLVER_ADDRESSES[chainId],
     functionName: "name",
