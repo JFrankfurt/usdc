@@ -1,29 +1,21 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import USDC_ABI from "@/abi/usdc";
-import Footer from "@/components/footer";
+import Button from "@/components/button";
 import Input from "@/components/input";
 import { USDC } from "@/constants/tokens";
 import { useUSDCBalance } from "@/hooks/useUSDCBalance";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 import { Address, formatUnits, parseUnits } from "viem";
+import { baseSepolia } from "viem/chains";
 import {
   useAccount,
-  useWriteContract,
   useEnsAddress,
   useEnsName,
   useWaitForTransactionReceipt,
+  useWriteContract,
 } from "wagmi";
-import Button from "@/components/button";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { Button as HeadlessButton } from "@headlessui/react";
-import classNames from "classnames";
-import { useDebounceValue } from "usehooks-ts";
 
 export default function Send() {
   const { data: balance, refetch: refetchBalance } = useUSDCBalance();
@@ -96,6 +88,7 @@ export default function Send() {
     }
     // Send the transaction
     writeContract({
+      chainId: baseSepolia.id,
       address: USDC.address as `0x${string}`,
       abi: USDC_ABI,
       functionName: "transfer",
@@ -103,30 +96,24 @@ export default function Send() {
     });
   };
 
-  const handleContactSelect = (contact: { name: string; address: string }) => {
-    setRecipient(contact.address);
-    setRecipientName(contact.name);
-    setIsContactPickerOpen(false);
-  };
-
   return (
     <div className="flex flex-col justify-start h-[calc(100vh-80px)]">
       <div className="flex flex-col mx-3 mt-12 gap-2">
-        <p className="text-xs text-palette-foregroundMuted">Cash balance</p>
+        <p className="text-xs text-palette-foregroundMuted">
+          Your cash balance
+        </p>
         <p className="text-7xl">
           ${balance ? formatUnits(balance, USDC.decimals) : "--"}
         </p>
       </div>
       <div className="flex flex-col mx-3 mt-6 gap-4 flex-1">
-        <HeadlessButton
-          onClick={() => setIsContactPickerOpen(true)}
-          className={classNames(
-            "border p-2 rounded hover:border-blue-600 flex flex-row",
-            { "text-palette-foregroundMuted": !recipient && !recipientName }
-          )}
-        >
-          {recipientName || recipient || "Select Recipient"}
-        </HeadlessButton>
+        <Input
+          type="text"
+          placeholder="Recipient"
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+          className="border p-2 rounded"
+        />
         <Input
           type="number"
           placeholder="Amount to Send"

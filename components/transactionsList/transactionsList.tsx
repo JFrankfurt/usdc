@@ -90,13 +90,17 @@ export function TransactionsList() {
                         </p>
                         <p className="text-sm text-gray-500">
                           {/* @ts-ignore */}
-                          {isSent && `To: ${tx.args?.to}`}
+                          {isSent &&
+                            `To: ${tx.args?.to.slice(
+                              0,
+                              6
+                            )}...${tx.args.to?.slice(-4)}`}
                           {!isSent &&
                             tx.args?.from &&
                             `From: ${tx.args?.from.slice(
                               0,
                               6
-                            )}...${tx.transactionHash?.slice(-4)}`}
+                            )}...${tx.args?.from.slice(-4)}`}
                         </p>
                       </div>
                     </div>

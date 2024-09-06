@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/footer";
 import { wagmiConfig } from "@/constants/wagmiConfig";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
