@@ -78,9 +78,9 @@ export default function Friends() {
       console.error("jf e", e);
       return "";
     }
-  }, []);
+  }, [debouncedSearchTerm]);
   const [lookupType, setLookupType] = useState<"name" | "address">("name");
-  const addressLookup = useMemo(() => lookupType === "address", []);
+  const addressLookup = useMemo(() => lookupType === "address", [lookupType]);
   useEffect(() => {
     if (
       debouncedSearchTerm.startsWith("0x") &&
