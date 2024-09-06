@@ -4,6 +4,7 @@ import EarnMoreSvg from "@/app/icons/earn-more.svg";
 import PendingRequestsList from "@/components/pendingRequestsList";
 import { TransactionsList } from "@/components/transactionsList/transactionsList";
 import { USDC } from "@/constants/tokens";
+import { useBasenameOfAddress } from "@/hooks/useBasenameOfAddress";
 import { useUSDCBalance } from "@/hooks/useUSDCBalance";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,10 +19,16 @@ export default function Home() {
   if (!account.isConnected) {
     router.push("/sign-in");
   }
+  const { data: basename } = useBasenameOfAddress(account.address);
   return (
     <div className="flex flex-col justify-start h-[calc(100vh-72px)]">
-      <div className="flex flex-col mx-3 mt-12 gap-2">
-        <p className="text-xs text-palette-foregroundMuted">Cash balance</p>
+      <div className="flex flex-col mx-3 mt-8 gap-2">
+        <div>
+          {!!basename && <p className=" text-palette-foreground">{basename}</p>}
+          <p className="text-xs ml-1 text-palette-foregroundMuted">
+            Cash balance
+          </p>
+        </div>
         <p className="text-7xl">
           ${balance ? formatUnits(balance, USDC.decimals) : "--"}
         </p>

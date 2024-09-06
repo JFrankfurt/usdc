@@ -1,145 +1,316 @@
 export default [
   {
-    inputs: [{ internalType: "address", name: "registry_", type: "address" }],
-    stateMutability: "nonpayable",
     type: "constructor",
-  },
-  {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
-    name: "InvalidNode",
-    type: "error",
-  },
-  {
     inputs: [
-      { internalType: "bytes32", name: "node", type: "bytes32" },
-      { internalType: "address", name: "addr", type: "address" },
-    ],
-    name: "NotAuthroized",
-    type: "error",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: "bytes32", name: "node", type: "bytes32" },
-    ],
-    name: "ConnectionsCleared",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: "bytes32", name: "node", type: "bytes32" },
       {
-        indexed: false,
-        internalType: "bytes32",
-        name: "newFollower",
-        type: "bytes32",
+        name: "registry_",
+        type: "address",
+        internalType: "address",
       },
     ],
-    name: "FollowerAdded",
-    type: "event",
+    stateMutability: "nonpayable",
   },
   {
-    anonymous: false,
+    type: "function",
+    name: "addFollows",
     inputs: [
-      { indexed: true, internalType: "bytes32", name: "node", type: "bytes32" },
       {
-        indexed: false,
-        internalType: "bytes32[]",
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
         name: "newFollows",
         type: "bytes32[]",
+        internalType: "bytes32[]",
       },
     ],
-    name: "FollowsAdded",
-    type: "event",
-  },
-  {
-    inputs: [
-      { internalType: "bytes32", name: "node", type: "bytes32" },
-      { internalType: "bytes32[]", name: "newFollows", type: "bytes32[]" },
-    ],
-    name: "addFollows",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
+    type: "function",
     name: "clearAll",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
+    type: "function",
     name: "getFollowNodes",
-    outputs: [{ internalType: "bytes32[]", name: "", type: "bytes32[]" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
-    name: "getFollowerNodes",
-    outputs: [{ internalType: "bytes32[]", name: "", type: "bytes32[]" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
-    name: "getFollowers",
-    outputs: [{ internalType: "string[]", name: "", type: "string[]" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
-    name: "getFollows",
-    outputs: [{ internalType: "string[]", name: "", type: "string[]" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
-      { internalType: "uint64", name: "recordVersions", type: "uint64" },
-      { internalType: "bytes32", name: "node", type: "bytes32" },
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
     ],
-    name: "graph",
     outputs: [
       {
-        components: [
-          { internalType: "uint256", name: "_spacer", type: "uint256" },
-        ],
-        internalType: "struct EnumerableSetLib.Bytes32Set",
-        name: "follows",
-        type: "tuple",
+        name: "",
+        type: "bytes32[]",
+        internalType: "bytes32[]",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getFollowerNodes",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bytes32[]",
+        internalType: "bytes32[]",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getFollowers",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "string[]",
+        internalType: "string[]",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getFollows",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "string[]",
+        internalType: "string[]",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "graph",
+    inputs: [
+      {
+        name: "recordVersions",
+        type: "uint64",
+        internalType: "uint64",
       },
       {
-        components: [
-          { internalType: "uint256", name: "_spacer", type: "uint256" },
-        ],
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "follows",
+        type: "tuple",
         internalType: "struct EnumerableSetLib.Bytes32Set",
+        components: [
+          {
+            name: "_spacer",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+      {
         name: "followers",
         type: "tuple",
+        internalType: "struct EnumerableSetLib.Bytes32Set",
+        components: [
+          {
+            name: "_spacer",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
       },
     ],
     stateMutability: "view",
-    type: "function",
   },
   {
-    inputs: [
-      { internalType: "bytes32", name: "node", type: "bytes32" },
-      { internalType: "bytes32[]", name: "newFollows", type: "bytes32[]" },
-    ],
+    type: "function",
     name: "removeFollows",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "unFollows",
+        type: "bytes32[]",
+        internalType: "bytes32[]",
+      },
+    ],
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "node", type: "bytes32" }],
-    name: "versions",
-    outputs: [{ internalType: "uint64", name: "version", type: "uint64" }],
-    stateMutability: "view",
     type: "function",
+    name: "versions",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "version",
+        type: "uint64",
+        internalType: "uint64",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "event",
+    name: "ConnectionsCleared",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        indexed: true,
+        internalType: "bytes32",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "FollowerAdded",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        indexed: true,
+        internalType: "bytes32",
+      },
+      {
+        name: "newFollower",
+        type: "bytes32",
+        indexed: false,
+        internalType: "bytes32",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "FollowerRemoved",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        indexed: true,
+        internalType: "bytes32",
+      },
+      {
+        name: "removedFollower",
+        type: "bytes32",
+        indexed: false,
+        internalType: "bytes32",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "FollowsAdded",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        indexed: true,
+        internalType: "bytes32",
+      },
+      {
+        name: "newFollows",
+        type: "bytes32[]",
+        indexed: false,
+        internalType: "bytes32[]",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "FollowsRemoved",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        indexed: true,
+        internalType: "bytes32",
+      },
+      {
+        name: "removedFollows",
+        type: "bytes32[]",
+        indexed: false,
+        internalType: "bytes32[]",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "error",
+    name: "InvalidNode",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+  },
+  {
+    type: "error",
+    name: "NotAuthroized",
+    inputs: [
+      {
+        name: "node",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "addr",
+        type: "address",
+        internalType: "address",
+      },
+    ],
   },
 ] as const;

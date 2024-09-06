@@ -4,11 +4,12 @@ import { GetLogsReturnType, parseAbiItem, type Address } from "viem";
 import { getLogs } from "viem/actions";
 import { useAccount, useClient } from "wagmi";
 import { ScrollArea } from "../ui/scroll-area";
+import { baseSepolia } from "viem/chains";
 
 export function TransactionsList() {
   const [sends, setSends] = useState<GetLogsReturnType | null>(null);
   const [receives, setReceives] = useState<GetLogsReturnType | null>(null);
-  const client = useClient();
+  const client = useClient({ chainId: baseSepolia.id });
   const { address } = useAccount();
   console.log("jf address", address);
   console.log("jf client", client);

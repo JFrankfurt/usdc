@@ -1,339 +1,339 @@
 export default [
   {
+    type: "function",
+    name: "cancelDebt",
     inputs: [
       {
-        internalType: "uint256",
         name: "_debtId",
         type: "uint256",
+        internalType: "uint256",
       },
     ],
-    name: "cancelDebt",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
   },
   {
+    type: "function",
+    name: "createDebt",
     inputs: [
       {
-        internalType: "address",
         name: "_debtor",
         type: "address",
+        internalType: "address",
       },
       {
-        internalType: "uint256",
         name: "_amount",
         type: "uint256",
+        internalType: "uint256",
       },
       {
-        internalType: "string",
         name: "_description",
         type: "string",
+        internalType: "string",
       },
     ],
-    name: "createDebt",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
   },
   {
+    type: "function",
+    name: "debts",
     inputs: [
       {
-        internalType: "uint256",
         name: "",
         type: "uint256",
+        internalType: "uint256",
       },
     ],
-    name: "debts",
     outputs: [
       {
-        internalType: "uint256",
         name: "id",
         type: "uint256",
+        internalType: "uint256",
       },
       {
-        internalType: "address",
         name: "creditor",
         type: "address",
+        internalType: "address",
       },
       {
-        internalType: "address",
         name: "debtor",
         type: "address",
+        internalType: "address",
       },
       {
-        internalType: "uint256",
         name: "amount",
         type: "uint256",
+        internalType: "uint256",
       },
       {
-        internalType: "string",
         name: "description",
         type: "string",
+        internalType: "string",
       },
     ],
     stateMutability: "view",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_address",
-        type: "address",
-      },
-    ],
+    type: "function",
     name: "getDebtsOwedBy",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "creditor",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "debtor",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "string",
-            name: "description",
-            type: "string",
-          },
-        ],
-        internalType: "struct YouOwe.Debt[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
-        internalType: "address",
         name: "_address",
         type: "address",
+        internalType: "address",
       },
     ],
-    name: "getDebtsOwedTo",
     outputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "creditor",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "debtor",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "string",
-            name: "description",
-            type: "string",
-          },
-        ],
-        internalType: "struct YouOwe.Debt[]",
         name: "",
         type: "tuple[]",
+        internalType: "struct YouOwe.Debt[]",
+        components: [
+          {
+            name: "id",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "creditor",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "debtor",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "description",
+            type: "string",
+            internalType: "string",
+          },
+        ],
       },
     ],
     stateMutability: "view",
-    type: "function",
   },
   {
+    type: "function",
+    name: "getDebtsOwedTo",
     inputs: [
       {
-        internalType: "uint256",
+        name: "_address",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "tuple[]",
+        internalType: "struct YouOwe.Debt[]",
+        components: [
+          {
+            name: "id",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "creditor",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "debtor",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "description",
+            type: "string",
+            internalType: "string",
+          },
+        ],
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "settleDebt",
+    inputs: [
+      {
         name: "_debtId",
         type: "uint256",
+        internalType: "uint256",
       },
     ],
-    name: "settleDebt",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
   },
   {
-    inputs: [],
-    name: "DebtDoesNotExist",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "IncorrectAmountSent",
-    type: "error",
-  },
-  {
+    type: "event",
+    name: "DebtCancelled",
     inputs: [
       {
+        name: "id",
+        type: "uint256",
+        indexed: false,
         internalType: "uint256",
+      },
+      {
+        name: "creditor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "debtor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "debtDescription",
+        type: "string",
+        indexed: false,
+        internalType: "string",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "DebtCreated",
+    inputs: [
+      {
+        name: "id",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "creditor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "debtor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "debtDescription",
+        type: "string",
+        indexed: false,
+        internalType: "string",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "DebtSettled",
+    inputs: [
+      {
+        name: "id",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "creditor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "debtor",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "debtDescription",
+        type: "string",
+        indexed: false,
+        internalType: "string",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "error",
+    name: "DebtDoesNotExist",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "IncorrectAmountSent",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InsufficientBalance",
+    inputs: [
+      {
         name: "required",
         type: "uint256",
+        internalType: "uint256",
       },
       {
-        internalType: "uint256",
         name: "available",
         type: "uint256",
+        internalType: "uint256",
       },
     ],
-    name: "InsufficientBalance",
-    type: "error",
   },
   {
-    inputs: [],
+    type: "error",
     name: "OnlyCreditorCanCancel",
-    type: "error",
+    inputs: [],
   },
   {
-    inputs: [],
+    type: "error",
     name: "OnlyDebtorCanSettle",
-    type: "error",
+    inputs: [],
   },
   {
-    inputs: [],
+    type: "error",
     name: "TransferFailed",
-    type: "error",
-  },
-  {
     inputs: [],
-    name: "YouCannotOweYourself",
+  },
+  {
     type: "error",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "creditor",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "debtor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "debtDescription",
-        type: "string",
-      },
-    ],
-    name: "DebtCancelled",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "creditor",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "debtor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "debtDescription",
-        type: "string",
-      },
-    ],
-    name: "DebtCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "creditor",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "debtor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "debtDescription",
-        type: "string",
-      },
-    ],
-    name: "DebtSettled",
-    type: "event",
+    name: "YouCannotOweYourself",
+    inputs: [],
   },
 ] as const;

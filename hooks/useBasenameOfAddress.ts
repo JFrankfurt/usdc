@@ -1,14 +1,6 @@
-import L2ResolverAbi from "@/abi/basenamesL2Resolver";
-import { Address, encodePacked, keccak256, namehash } from "viem";
-import { base, baseSepolia, mainnet } from "viem/chains";
-import { useChainId, useReadContract } from "wagmi";
-
-type AddressMap = Record<number, Address>;
-
-export const USERNAME_L2_RESOLVER_ADDRESSES: AddressMap = {
-  [baseSepolia.id]: "0x6533C94869D28fAA8dF77cc63f9e2b2D6Cf77eBA",
-  [base.id]: "0xC6d566A56A1aFf6508b41f6c90ff131615583BCD",
-};
+import { useName } from "@coinbase/onchainkit/identity";
+import { Address, isAddress } from "viem";
+import { baseSepolia, mainnet } from "viem/chains";
 
 /**
  * Convert an chainId to a coinType hex for reverse chain resolution
@@ -24,24 +16,14 @@ export const convertChainIdToCoinType = (chainId: number): string => {
 };
 
 export function useBasenameOfAddress(address: Address | undefined = "0x0") {
-  const addressFormatted = address.toLocaleLowerCase() as Address;
-  const addressNode = keccak256(addressFormatted.substring(2) as Address);
-  const chainCoinType = convertChainIdToCoinType(baseSepolia.id);
-  const baseReverseNode = namehash(
-    `${chainCoinType.toLocaleUpperCase()}.reverse`
-  );
-  const addressReverseNode = keccak256(
-    encodePacked(["bytes32", "bytes32"], [baseReverseNode, addressNode])
-  );
-  const chainId = useChainId();
-  return useReadContract({
-    chainId: baseSepolia.id,
-    abi: L2ResolverAbi,
-    address: USERNAME_L2_RESOLVER_ADDRESSES[chainId],
-    functionName: "name",
-    args: [addressReverseNode],
-    query: {
-      enabled: !!address,
+  return useName(
+    {
+      address: address,
+      // @ts-ignore
+      chain: baseSepolia,
     },
-  });
+    {
+      enabled: !!address && isAddress(address),
+    }
+  );
 }

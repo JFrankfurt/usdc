@@ -5,24 +5,16 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { USERNAME_L2_RESOLVER_ADDRESSES } from "@/constants/addresses";
 import { CLOUDFARE_IPFS_PROXY } from "@/constants/urls";
-import {
-  useBasenameOfAddress,
-  USERNAME_L2_RESOLVER_ADDRESSES,
-} from "@/hooks/useBasenameOfAddress";
+import { useBasenameOfAddress } from "@/hooks/useBasenameOfAddress";
 import Image from "next/image";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { Address, isAddress } from "viem";
 import { baseSepolia } from "viem/chains";
 import { normalize } from "viem/ens";
-import {
-  useAccount,
-  useEnsAddress,
-  useEnsAvatar,
-  useWriteContract,
-} from "wagmi";
-import BasefriendsABI from "@/abi/basefriends";
+import { useAccount, useEnsAddress, useEnsAvatar } from "wagmi";
 
 interface ResultItemProps {
   name?: string;
@@ -34,15 +26,16 @@ const ResultItem: React.FC<ResultItemProps> = ({
   address,
 }: ResultItemProps) => {
   const { address: connectedAddress } = useAccount();
-  const { writeContract } = useWriteContract();
+  // const { writeContract } = useWriteContract();
+
   const addFriend = useCallback(() => {
     if (!connectedAddress) return;
-    writeContract({
-      abi: BasefriendsABI,
-      address: connectedAddress,
-      functionName: "addFollows",
-      args: [node, newFollows],
-    });
+    // writeContract({
+    //   abi: BasefriendsABI,
+    //   address: connectedAddress,
+    //   functionName: "addFollows",
+    //   args: [node, newFollows],
+    // });
   }, [connectedAddress]);
   return (
     <div className="flex items-center space-x-4 p-2 hover:bg-gray-100 ">
@@ -108,7 +101,6 @@ export default function Friends() {
     universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[baseSepolia.id],
     query: {
       enabled: !!normalizedSearchTerm && lookupType === "name",
-      retry: true,
     },
   });
 
@@ -120,12 +112,12 @@ export default function Friends() {
       ipfs: CLOUDFARE_IPFS_PROXY,
     },
     query: {
-      retry: true,
       enabled: !!foundBasename ?? !!normalizedSearchTerm,
     },
   });
 
   console.log("jf foundBasename", foundBasename);
+
   console.log("jf foundAvatar", foundAvatar);
   console.log("jf foundAddress", foundAddress);
   return (
