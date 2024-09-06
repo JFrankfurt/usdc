@@ -1,7 +1,12 @@
 "use client";
 import { USDC } from "@/constants/tokens";
 import { useEffect, useMemo, useState } from "react";
-import { GetLogsReturnType, parseAbiItem, type Address } from "viem";
+import {
+  formatUnits,
+  GetLogsReturnType,
+  parseAbiItem,
+  type Address,
+} from "viem";
 import { getLogs } from "viem/actions";
 import { useAccount, useClient } from "wagmi";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -102,8 +107,7 @@ export function TransactionsList() {
                         }`}
                       >
                         {isSent ? "-" : "+"}
-                        {/* @ts-ignore */}
-                        {tx.args?.value.toString()} USDC
+                        {formatUnits(tx.args?.value, 6)} USDC
                       </p>
                       <p className="text-sm text-gray-500">
                         Tx: {tx.transactionHash?.slice(0, 6)}...
