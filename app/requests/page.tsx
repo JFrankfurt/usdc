@@ -12,6 +12,7 @@ import { formatEther, parseEther } from "viem";
 import YOU_OWE_ABI from "@/abi/youOwe";
 import { YOU_OWE_ADDRESS } from "@/constants/addresses";
 import Button from "@/components/button";
+import { useRouter } from "next/navigation";
 
 type Debt = {
   id: bigint;
@@ -22,10 +23,14 @@ type Debt = {
 };
 
 export default function DebtManagement() {
-  const { address } = useAccount();
   const [incomingDebts, setIncomingDebts] = useState<Debt[]>([]);
   const [outgoingDebts, setOutgoingDebts] = useState<Debt[]>([]);
 
+  const { address, isConnected } = useAccount();
+  const router = useRouter();
+  if (!isConnected) {
+    router.push("/sign-in");
+  }
   const { data: incomingDebtsData, refetch: refetchIncoming } = useReadContract(
     {
       address: YOU_OWE_ADDRESS[baseSepolia.id],

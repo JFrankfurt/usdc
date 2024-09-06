@@ -7,7 +7,13 @@ import { USDC } from "@/constants/tokens";
 import { useUSDCBalance } from "@/hooks/useUSDCBalance";
 import { useRouter } from "next/navigation";
 import { Address, formatUnits, parseUnits } from "viem";
-import { useAccount, useWriteContract, useEnsAddress, useEnsName } from "wagmi";
+import {
+  useAccount,
+  useWriteContract,
+  useEnsAddress,
+  useEnsName,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 import Button from "@/components/button";
 import {
   Dialog,
@@ -17,62 +23,84 @@ import {
 } from "@headlessui/react";
 import { Button as HeadlessButton } from "@headlessui/react";
 import classNames from "classnames";
+import { useDebounceValue } from "usehooks-ts";
 
 export default function Send() {
-  const { data: balance } = useUSDCBalance();
+  const { data: balance, refetch: refetchBalance } = useUSDCBalance();
   const router = useRouter();
-  const account = useAccount();
+  const { address, isConnected } = useAccount();
   const [recipient, setRecipient] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [amount, setAmount] = useState("");
-  const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isContactPickerOpen, setIsContactPickerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 250);
   const [contacts, setContacts] = useState<
     Array<{ name: string; address: string }>
   >([]);
 
-  const { writeContract, isPending: isTransactionLoading } = useWriteContract();
-  const { data: ensAddress } = useEnsAddress({ name: searchTerm });
-  const { data: ensName } = useEnsName({ address: searchTerm as Address });
+  const {
+    writeContract,
+    data: hash,
+    isPending,
+    isError: isWriteError,
+    error: writeError,
+  } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+  const { data: ensAddress } = useEnsAddress({ name: debouncedSearchTerm });
+  const { data: ensName } = useEnsName({
+    address: debouncedSearchTerm as Address,
+  });
 
   useEffect(() => {
     if (ensAddress || ensName) {
       setContacts([
-        { name: ensName || searchTerm, address: ensAddress || searchTerm },
+        {
+          name: ensName || debouncedSearchTerm,
+          address: ensAddress || debouncedSearchTerm,
+        },
       ]);
     }
-  }, [ensAddress, ensName, searchTerm]);
+  }, [ensAddress, ensName, debouncedSearchTerm]);
 
-  if (!account.isConnected) {
-    router.push("/sign-in");
-  }
+  useEffect(() => {
+    if (!isConnected) {
+      router.push("/sign-in");
+    }
+  }, [isConnected, router]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      refetchBalance();
+      setAmount("");
+      setRecipient("");
+      setRecipientName("");
+    }
+  }, [isConfirmed, refetchBalance]);
 
   const handleSend = async () => {
-    try {
-      setIsSending(true);
-      setError(null);
-      // Validate input
-      if (!recipient || !amount || parseFloat(amount) <= 0) {
-        throw new Error("Invalid recipient or amount");
-      }
-      const balanceInUnits = formatUnits(balance ?? 0n, USDC.decimals);
-      if (parseFloat(amount) > parseFloat(balanceInUnits)) {
-        throw new Error("Insufficient balance");
-      }
-      // Send the transaction
-      writeContract({
-        address: USDC.address as `0x${string}`,
-        abi: USDC_ABI,
-        functionName: "transfer",
-        args: [recipient as Address, parseUnits(amount || "0", USDC.decimals)],
-      });
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setIsSending(false);
+    setError(null);
+    // Validate input
+    if (!recipient || !amount || parseFloat(amount) <= 0) {
+      setError("Invalid recipient or amount");
+      return;
     }
+    const balanceInUnits = formatUnits(balance ?? 0n, USDC.decimals);
+    if (parseFloat(amount) > parseFloat(balanceInUnits)) {
+      setError("Insufficient balance");
+      return;
+    }
+    // Send the transaction
+    writeContract({
+      address: USDC.address as `0x${string}`,
+      abi: USDC_ABI,
+      functionName: "transfer",
+      args: [recipient as Address, parseUnits(amount, USDC.decimals)],
+    });
   };
 
   const handleContactSelect = (contact: { name: string; address: string }) => {
@@ -108,12 +136,20 @@ export default function Send() {
         />
         <Button
           onClick={handleSend}
-          disabled={isSending || isTransactionLoading}
+          disabled={isPending || isConfirming}
           className="bg-ocsblue text-white"
         >
-          {isSending || isTransactionLoading ? "Sending..." : "Send"}
+          {isPending ? "Approving..." : isConfirming ? "Confirming..." : "Send"}
         </Button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
+        {isWriteError && (
+          <p className="text-red-500 mt-2">
+            {writeError?.message || "Transaction failed"}
+          </p>
+        )}
+        {isConfirmed && (
+          <p className="text-green-500 mt-2">Transaction confirmed!</p>
+        )}
       </div>
       <Footer />
 
@@ -123,11 +159,11 @@ export default function Send() {
       >
         <DialogBackdrop className="fixed inset-0 bg-black/30" />
         <div className="fixed inset-0 flex w-screen items-start justify-center p-4">
-          <DialogPanel className="space-y-4 border bg-white p-12">
+          <DialogPanel className="flex flex-col space-y-4 border bg-white p-12">
             <DialogTitle>Select Recipient</DialogTitle>
             <Input
               type="text"
-              placeholder="Search by ENS name or address"
+              placeholder="basename or address"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="border p-2 rounded mb-4"
@@ -137,11 +173,18 @@ export default function Send() {
                 <HeadlessButton
                   key={index}
                   onClick={() => handleContactSelect(contact)}
+                  className="block w-full text-left p-2 hover:bg-gray-100"
                 >
                   {contact.name} ({contact.address})
                 </HeadlessButton>
               ))}
             </div>
+            <Button
+              onClick={() => setIsContactPickerOpen(false)}
+              className="bg-ocsblue text-white flex-1"
+            >
+              close
+            </Button>
           </DialogPanel>
         </div>
       </Dialog>

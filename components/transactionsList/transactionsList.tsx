@@ -25,7 +25,7 @@ export function TransactionsList() {
             "event Transfer(address indexed from, address indexed to, uint256)"
           ),
           args: {
-            from: "0x48c89d77ae34ae475e4523b25ab01e363dce5a78",
+            from: address,
           },
           fromBlock: 2212480n,
         });
@@ -40,7 +40,7 @@ export function TransactionsList() {
             "event Transfer(address indexed from, address indexed to, uint256)"
           ),
           args: {
-            to: "0x48c89d77ae34ae475e4523b25ab01e363dce5a78",
+            to: address,
           },
           fromBlock: 2212480n,
         });
