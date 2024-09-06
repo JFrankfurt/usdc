@@ -21,7 +21,7 @@ export default function Home() {
   }
   const { data: basename } = useBasenameOfAddress(account.address);
   return (
-    <div className="flex flex-col justify-start h-[calc(100vh-72px)]">
+    <div className="flex flex-col justify-start h-[calc(100vh-80px)]">
       <div className="flex flex-col mx-3 mt-8 gap-2">
         <div>
           {!!basename && <p className=" text-palette-foreground">{basename}</p>}

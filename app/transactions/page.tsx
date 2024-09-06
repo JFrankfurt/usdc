@@ -1,13 +1,9 @@
-import Footer from "@/components/footer";
+import { TransactionsList } from "@/components/transactionsList/transactionsList";
 
 export default function Transactions() {
   return (
-    <div>
-      <p>todo</p>
-      <ol>
-        <li>render a list of payment transactions</li>
-      </ol>
-      <Footer />
+    <div className="container mx-auto p-4 h-[calc(100vh-80px)]">
+      <TransactionsList />
     </div>
   );
 }

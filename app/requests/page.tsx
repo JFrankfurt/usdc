@@ -98,7 +98,7 @@ export default function DebtManagement() {
   }, [isCancelSuccess, isSettleSuccess, refetchIncoming, refetchOutgoing]);
 
   return (
-    <div className="container mx-auto p-4 h-[calc(100vh-72px)]">
+    <div className="container mx-auto p-4 h-[calc(100vh-80px)]">
       <h1 className="text-2xl font-bold mb-4">Pending Requests</h1>
 
       <div className="mb-8">

@@ -1,9 +1,10 @@
+"use client";
 import { USDC } from "@/constants/tokens";
 import { useEffect, useMemo, useState } from "react";
 import { GetLogsReturnType, parseAbiItem, type Address } from "viem";
 import { getLogs } from "viem/actions";
 import { useAccount, useClient } from "wagmi";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { baseSepolia } from "viem/chains";
 
 export function TransactionsList() {
@@ -11,19 +12,15 @@ export function TransactionsList() {
   const [receives, setReceives] = useState<GetLogsReturnType | null>(null);
   const client = useClient({ chainId: baseSepolia.id });
   const { address } = useAccount();
-  console.log("jf address", address);
-  console.log("jf client", client);
+
   useEffect(() => {
     if (!address || !client) return;
-
     async function fetchLogs() {
       try {
-        // Fetch sent transactions (where `from` is the current user)
-        // @ts-ignore
         const sendLogs = await getLogs(client, {
           address: USDC.address as Address,
           event: parseAbiItem(
-            "event Transfer(address indexed from, address indexed to, uint256)"
+            "event Transfer(address indexed from, address indexed to, uint256 value)"
           ),
           args: {
             from: address,
@@ -31,60 +28,94 @@ export function TransactionsList() {
           fromBlock: 2212480n,
         });
 
-        console.log("jf sendLogs", sendLogs);
-
-        // Fetch received transactions (where `to` is the current user)
-        // @ts-ignore
         const receiveLogs = await getLogs(client, {
           address: USDC.address as Address,
           event: parseAbiItem(
-            "event Transfer(address indexed from, address indexed to, uint256)"
+            "event Transfer(address indexed from, address indexed to, uint256 value)"
           ),
           args: {
             to: address,
           },
           fromBlock: 2212480n,
         });
-        console.log("jf receiveLogs", receiveLogs);
 
-        // Set both states
         setSends(sendLogs);
         setReceives(receiveLogs);
       } catch (error) {
         console.error("Error fetching logs:", error);
       }
     }
-    fetchLogs().finally(() => {
-      console.log("jf finally");
-    });
+    fetchLogs();
   }, [address, client]);
 
-  // Merge the send and receive transactions and sort them by blockNumber or timestamp
   const transactions = useMemo(() => {
     if (!sends && !receives) return [];
-
     const allTransactions = [...(sends || []), ...(receives || [])];
-
-    // Sort transactions by block number (or other criteria if necessary)
     return allTransactions.sort(
-      (a, b) => Number(a.blockNumber) - Number(b.blockNumber)
+      (a, b) => Number(b.blockNumber) - Number(a.blockNumber)
     );
   }, [sends, receives]);
 
   return (
-    <ScrollArea>
-      {transactions.length === 0 ? (
-        <p>No transactions found</p>
-      ) : (
-        transactions.map((tx, index) => (
-          <div key={tx.transactionHash || index}>
-            <p>Transaction Hash: {tx.transactionHash}</p>
-            {/* <p>From: {tx.args?.from}</p>
-            <p>To: {tx.args?.to}</p>
-            <p>Amount: {tx.args?.value.toString()}</p> */}
-          </div>
-        ))
-      )}
-    </ScrollArea>
+    <div className="w-full">
+      <ScrollArea>
+        {transactions.length === 0 ? (
+          <p className="text-center py-8 text-gray-500">
+            No transactions found
+          </p>
+        ) : (
+          <ul className="divide-y divide-gray-200">
+            {transactions.map((tx, index) => {
+              // @ts-ignore
+              const isSent = tx.args?.from === address;
+              return (
+                <li
+                  key={tx.transactionHash || index}
+                  className="p-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className={`p-2 rounded-full text-white ${
+                          isSent ? "bg-palette-negative" : "bg-palette-positive"
+                        }`}
+                      >
+                        {isSent ? "->" : "<-"}
+                      </div>
+                      <div>
+                        <p className="font-medium">
+                          {isSent ? "Sent" : "Received"}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {/* @ts-ignore */}
+                          {isSent && `To: ${tx.args?.to}`}
+                          {/* @ts-ignore */}
+                          {!isSent && `From: ${tx.args?.from}`}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p
+                        className={`font-medium ${
+                          isSent ? "text-red-600" : "text-green-600"
+                        }`}
+                      >
+                        {isSent ? "-" : "+"}
+                        {/* @ts-ignore */}
+                        {tx.args?.value.toString()} USDC
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Tx: {tx.transactionHash?.slice(0, 6)}...
+                        {tx.transactionHash?.slice(-4)}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </ScrollArea>
+    </div>
   );
 }

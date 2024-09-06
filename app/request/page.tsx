@@ -48,7 +48,7 @@ export default function Request() {
   }, [isCreateDebtSuccessful, router]);
 
   return (
-    <div className="container mx-auto p-4 h-[calc(100vh-72px)]">
+    <div className="container mx-auto p-4 h-[calc(100vh-80px)]">
       <h1 className="text-2xl font-bold mb-4">Create New Request</h1>
       <div className="space-y-4">
         <div>

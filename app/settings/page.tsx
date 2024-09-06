@@ -46,7 +46,7 @@ const SettingsAndAccount: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 h-[calc(100vh-72px)]">
+    <div className="container mx-auto p-4 h-[calc(100vh-80px)]">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-palette-foreground mb-8">
           Settings & Account
