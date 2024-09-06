@@ -1,7 +1,6 @@
 "use client";
 
 import EarnMoreSvg from "@/app/icons/earn-more.svg";
-import Footer from "@/components/footer";
 import { TransactionsList } from "@/components/transactionsList/transactionsList";
 import { USDC } from "@/constants/tokens";
 import { useUSDCBalance } from "@/hooks/useUSDCBalance";
@@ -59,7 +58,6 @@ export default function Home() {
           Request
         </Link>
       </div>
-      <Footer />
     </div>
   );
 }

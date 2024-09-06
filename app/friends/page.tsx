@@ -1,44 +1,79 @@
 "use client";
 
 import MagnifyingGlass from "@/app/icons/magnifying-glass.svg";
+import Button from "@/components/button";
 import Input from "@/components/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import useBaseEnsAvatar from "@/hooks/useBaseEnsAvatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CLOUDFARE_IPFS_PROXY } from "@/constants/urls";
 import {
   useBasenameOfAddress,
   USERNAME_L2_RESOLVER_ADDRESSES,
 } from "@/hooks/useBasenameOfAddress";
-import { Basename } from "@coinbase/onchainkit/identity";
 import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { Address, isAddress } from "viem";
 import { baseSepolia } from "viem/chains";
-import { useEnsAddress } from "wagmi";
 import { normalize } from "viem/ens";
+import {
+  useAccount,
+  useEnsAddress,
+  useEnsAvatar,
+  useWriteContract,
+} from "wagmi";
+import BasefriendsABI from "@/abi/basefriends";
 
 interface ResultItemProps {
   name?: string;
   address: string;
 }
 
-const ResultItem: React.FC<ResultItemProps> = ({ name, address }) => (
-  <div className="flex items-center space-x-4 p-2 hover:bg-gray-100 rounded-lg">
-    <Avatar>
-      <AvatarImage
-        src={`https://effigy.im/a/${address}.svg`}
-        alt={name || address}
-      />
-      <AvatarFallback>
-        {name ? name[0].toUpperCase() : address.slice(0, 2)}
-      </AvatarFallback>
-    </Avatar>
-    <div>
-      {name && <p className="font-medium">{name}</p>}
-      <p className="text-sm text-gray-500">{address}</p>
+const ResultItem: React.FC<ResultItemProps> = ({
+  name,
+  address,
+}: ResultItemProps) => {
+  const { address: connectedAddress } = useAccount();
+  const { writeContract } = useWriteContract();
+  const addFriend = useCallback(() => {
+    if (!connectedAddress) return;
+    writeContract({
+      abi: BasefriendsABI,
+      address: connectedAddress,
+      functionName: "addFollows",
+      args: [node, newFollows],
+    });
+  }, [connectedAddress]);
+  return (
+    <div className="flex items-center space-x-4 p-2 hover:bg-gray-100 ">
+      <Avatar>
+        <AvatarImage
+          src={`https://effigy.im/a/${address}.svg`}
+          alt={name || address}
+        />
+        <AvatarFallback>
+          {name ? name[0].toUpperCase() : address.slice(0, 2)}
+        </AvatarFallback>
+      </Avatar>
+      <div className="flex flex-row items-center flex-1 justify-between">
+        <div>
+          <p className="font-medium text-palette-foreground">
+            {name ?? "name"}
+          </p>
+          <p className="text-xs text-gray-500 text-palette-foregroundMuted">
+            {address.substring(0, 6)}...{address.substring(address.length - 4)}
+          </p>
+        </div>
+        <Button
+          className="bg-ocsblue text-white rounded-full"
+          onClick={addFriend}
+        >
+          add friend
+        </Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function Friends() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,6 +82,7 @@ export default function Friends() {
     try {
       return normalize(debouncedSearchTerm);
     } catch (e) {
+      console.error("jf e", e);
       return "";
     }
   }, []);
@@ -70,11 +106,25 @@ export default function Friends() {
     chainId: baseSepolia.id,
     name: normalizedSearchTerm,
     universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[baseSepolia.id],
-    query: { enabled: !!normalizedSearchTerm && lookupType === "name" },
+    query: {
+      enabled: !!normalizedSearchTerm && lookupType === "name",
+      retry: true,
+    },
   });
-  const { data: foundAvatar } = useBaseEnsAvatar(
-    foundBasename ?? normalizedSearchTerm
-  );
+
+  const { data: foundAvatar } = useEnsAvatar({
+    name: foundBasename ?? normalizedSearchTerm,
+    chainId: baseSepolia.id,
+    universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[baseSepolia.id],
+    assetGatewayUrls: {
+      ipfs: CLOUDFARE_IPFS_PROXY,
+    },
+    query: {
+      retry: true,
+      enabled: !!foundBasename ?? !!normalizedSearchTerm,
+    },
+  });
+
   console.log("jf foundBasename", foundBasename);
   console.log("jf foundAvatar", foundAvatar);
   console.log("jf foundAddress", foundAddress);
@@ -95,14 +145,14 @@ export default function Friends() {
         />
       </div>
 
-      <div className="flex flex-col flex-1 space-y-2 mb-4">
+      <ScrollArea className="flex flex-col flex-1 space-y-2 mb-4">
         {Boolean(foundBasename || foundAddress) && (
           <ResultItem
             name={foundBasename ?? normalizedSearchTerm}
             address={foundAddress ?? normalizedSearchTerm}
           />
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }

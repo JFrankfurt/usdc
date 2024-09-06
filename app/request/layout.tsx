@@ -1,5 +1,4 @@
 "use client";
-import Footer from "@/components/footer";
 import { wagmiConfig } from "@/constants/wagmiConfig";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
@@ -14,10 +13,7 @@ export default function HomeLayout({
 }) {
   return (
     <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        <Footer />
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );
 }

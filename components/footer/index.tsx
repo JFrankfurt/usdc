@@ -16,7 +16,7 @@ export default function Footer() {
         Home
       </Link>
       <Link
-        href="/reward"
+        href=""
         className="flex flex-col items-center justify-between hover:bg-gray-10 bg-white transition-colors"
       >
         <Image src={Star} alt="Rewards" />
