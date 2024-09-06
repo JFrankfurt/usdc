@@ -1,5 +1,5 @@
 import { createConfig, webSocket } from "wagmi";
-import { base } from "wagmi/chains";
+import { baseSepolia } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 
 const alchemyAPIKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
@@ -7,12 +7,12 @@ if (!alchemyAPIKey) {
   throw new Error("NEXT_PUBLIC_ALCHEMY_KEY is required");
 }
 export const wagmiConfig = createConfig({
-  chains: [base],
+  chains: [baseSepolia],
   transports: {
     // [base.id]: webSocket(
     //   `wss://base-mainnet.g.alchemy.com/v2/${alchemyAPIKey}`
     // ),
-    [base.id]: webSocket(
+    [baseSepolia.id]: webSocket(
       `wss://base-sepolia.g.alchemy.com/v2/${alchemyAPIKey}`
     ),
   },

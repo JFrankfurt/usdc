@@ -4,7 +4,7 @@ import Button from "@/components/button";
 import { YOU_OWE_ADDRESS } from "@/constants/addresses";
 import { useCallback, useEffect, useState } from "react";
 import { isAddress, parseEther } from "viem";
-import { base } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { useWriteContract } from "wagmi";
 import { useRouter } from "next/navigation";
 
@@ -31,9 +31,9 @@ export default function Request() {
     }
 
     createDebt({
-      chainId: base.id,
+      chainId: baseSepolia.id,
       abi: YOU_OWE_ABI,
-      address: YOU_OWE_ADDRESS[base.id],
+      address: YOU_OWE_ADDRESS[baseSepolia.id],
       functionName: "createDebt",
       args: [debtorAddress, parseEther(amount), description],
     });

@@ -14,7 +14,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { Address, isAddress } from "viem";
-import { base } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { normalize } from "viem/ens";
 import {
   useAccount,
@@ -103,9 +103,9 @@ export default function Friends() {
     addressLookup ? (debouncedSearchTerm as Address) : undefined
   );
   const { data: foundAddress } = useEnsAddress({
-    chainId: base.id,
+    chainId: baseSepolia.id,
     name: normalizedSearchTerm,
-    universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[base.id],
+    universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[baseSepolia.id],
     query: {
       enabled: !!normalizedSearchTerm && lookupType === "name",
       retry: true,
@@ -114,8 +114,8 @@ export default function Friends() {
 
   const { data: foundAvatar } = useEnsAvatar({
     name: foundBasename ?? normalizedSearchTerm,
-    chainId: base.id,
-    universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[base.id],
+    chainId: baseSepolia.id,
+    universalResolverAddress: USERNAME_L2_RESOLVER_ADDRESSES[baseSepolia.id],
     assetGatewayUrls: {
       ipfs: CLOUDFARE_IPFS_PROXY,
     },
