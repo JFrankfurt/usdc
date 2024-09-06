@@ -69,14 +69,11 @@ export function TransactionsList() {
               // @ts-ignore
               const isSent = tx.args?.from === address;
               return (
-                <li
-                  key={tx.transactionHash || index}
-                  className="p-4 hover:bg-gray-50 transition-colors"
-                >
+                <li key={tx.transactionHash || index} className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div
-                        className={`p-2 rounded-full text-white ${
+                        className={`px-1 rounded-full text-white ${
                           isSent ? "bg-palette-negative" : "bg-palette-positive"
                         }`}
                       >
@@ -89,8 +86,12 @@ export function TransactionsList() {
                         <p className="text-sm text-gray-500">
                           {/* @ts-ignore */}
                           {isSent && `To: ${tx.args?.to}`}
-                          {/* @ts-ignore */}
-                          {!isSent && `From: ${tx.args?.from}`}
+                          {!isSent &&
+                            tx.args?.from &&
+                            `From: ${tx.args?.from.slice(
+                              0,
+                              6
+                            )}...${tx.transactionHash?.slice(-4)}`}
                         </p>
                       </div>
                     </div>

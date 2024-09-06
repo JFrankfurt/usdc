@@ -110,7 +110,7 @@ export default function Send() {
   };
 
   return (
-    <div className="flex flex-col justify-start h-screen">
+    <div className="flex flex-col justify-start h-[calc(100vh-80px)]">
       <div className="flex flex-col mx-3 mt-12 gap-2">
         <p className="text-xs text-palette-foregroundMuted">Cash balance</p>
         <p className="text-7xl">
@@ -151,9 +151,8 @@ export default function Send() {
           <p className="text-green-500 mt-2">Transaction confirmed!</p>
         )}
       </div>
-      <Footer />
 
-      <Dialog
+      {/* <Dialog
         open={isContactPickerOpen}
         onClose={() => setIsContactPickerOpen(false)}
       >
@@ -187,7 +186,7 @@ export default function Send() {
             </Button>
           </DialogPanel>
         </div>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }

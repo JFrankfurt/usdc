@@ -13,7 +13,10 @@ export default function HomeLayout({
 }) {
   return (
     <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <Footer />
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
