@@ -97,7 +97,7 @@ export default function Send() {
   };
 
   return (
-    <div className="flex flex-col justify-start h-[calc(100vh-80px)]">
+    <div className="flex flex-col justify-start">
       <div className="flex flex-col mx-3 mt-12 gap-2">
         <p className="text-xs text-palette-foregroundMuted">
           Your cash balance

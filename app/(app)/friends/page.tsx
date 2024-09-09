@@ -116,12 +116,8 @@ export default function Friends() {
     },
   });
 
-  console.log("jf foundBasename", foundBasename);
-
-  console.log("jf foundAvatar", foundAvatar);
-  console.log("jf foundAddress", foundAddress);
   return (
-    <div className="flex flex-col h-screen p-4">
+    <div className="flex flex-col p-4">
       <div className="relative mb-4">
         <Image
           src={MagnifyingGlass}

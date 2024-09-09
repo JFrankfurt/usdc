@@ -21,39 +21,43 @@ export default function Home() {
   }
   const { data: basename } = useBasenameOfAddress(account.address);
   return (
-    <div className="flex flex-col justify-start h-[calc(100vh-80px)]">
-      <div className="flex flex-col mx-3 mt-8 gap-2">
-        <div>
-          {!!basename && <p className=" text-palette-foreground">{basename}</p>}
-          <p className="text-xs ml-1 text-palette-foregroundMuted">
-            Cash balance
+    <>
+      <div className="flex flex-1 flex-col justify-start">
+        <div className="flex flex-col mx-3 mt-8 gap-2">
+          <div>
+            {!!basename && (
+              <p className=" text-palette-foreground">{basename}</p>
+            )}
+            <p className="text-xs ml-1 text-palette-foregroundMuted">
+              Cash balance
+            </p>
+          </div>
+          <p className="text-7xl">
+            ${balance ? formatUnits(balance, USDC.decimals) : "0"}
           </p>
         </div>
-        <p className="text-7xl">
-          ${balance ? formatUnits(balance, USDC.decimals) : "--"}
-        </p>
-      </div>
-      <div className="flex flex-row gap-3 items-center mx-8 my-4">
-        <div>
-          <b>Want to earn more?</b>
-          <p className="text-palette-foregroundMuted text-sm">
-            Add money and start earning 5% yield on your funds
-          </p>
+        <div className="flex flex-row gap-3 items-center mx-8 my-4">
+          <div>
+            <b>Want to earn more?</b>
+            <p className="text-palette-foregroundMuted text-sm">
+              Add money and start earning 5% yield on your funds
+            </p>
+          </div>
+          <Image src={EarnMoreSvg} alt="earn more filler" />
         </div>
-        <Image src={EarnMoreSvg} alt="earn more filler" />
-      </div>
 
-      <div className="flex flex-row items-center justify-between mx-4">
-        <h2 className="text-xl font-semibold">Transactions</h2>
-        <Link href="/transactions" className="text-ocsblue hover:underline">
-          See all
-        </Link>
+        <div className="flex flex-row items-center justify-between mx-4">
+          <h2 className="text-xl font-semibold">Transactions</h2>
+          <Link href="/transactions" className="text-ocsblue hover:underline">
+            See all
+          </Link>
+        </div>
+        <div className="flex-1">
+          <PendingRequestsList />
+          <TransactionsList />
+        </div>
       </div>
-      <div className="flex-1">
-        <PendingRequestsList />
-        <TransactionsList />
-      </div>
-      <div className="flex flex-row justify-around items-center gap-4 mx-4">
+      <div className="fixed bottom-20 right-0 left-0 flex flex-row justify-around items-center gap-4 mx-4">
         <Link
           href="/send"
           className="py-2 px-3 bg-ocsblue text-white rounded-full flex-grow flex items-center flex-row justify-center font-semibold w-1/3"
@@ -67,6 +71,6 @@ export default function Home() {
           Request
         </Link>
       </div>
-    </div>
+    </>
   );
 }

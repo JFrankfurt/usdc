@@ -15,7 +15,7 @@ export default function HomeLayout({
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <div className="mb-20">{children}</div>
         <Footer />
       </QueryClientProvider>
     </WagmiProvider>
