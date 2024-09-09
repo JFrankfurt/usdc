@@ -43,7 +43,7 @@ export default function SignIn() {
     }
   }, [connectors, connect, router]);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex flex-col items-center justify-between mt-4 gap-4">
       <Button
         className="flex flex-row justify-center items-center bg-ocsblue text-white gap-2"
         onClick={createWallet}
